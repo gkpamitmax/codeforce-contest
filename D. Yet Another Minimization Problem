@@ -1,0 +1,59 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int solve( vector<int>&a,vector<int>&b,vector<vector<int>>&dp,int i,int sum,vector<int>&prefix)
+{
+    if(i==a.size())
+    return 0;
+    if(dp[i][sum]!=-1)
+    return dp[i][sum];
+    
+    return dp[i][sum]=min(sum*a[i]+(prefix[i-1]-sum)*b[i]+solve(a,b,dp,i+1,sum+a[i],prefix),sum*b[i]+(prefix[i-1]-sum)*a[i]+solve(a,b,dp,i+1,sum+b[i],prefix));
+    
+}
+
+int main()
+{
+    int t;
+    cin>>t;
+    
+    while(t--)
+    {
+        int n;
+        cin>>n;
+        vector<int>a(n);
+        for(int i=0;i<n;i++)
+        cin>>a[i];
+        vector<int>b(n);
+        for(int i=0;i<n;i++)
+        cin>>b[i];
+        vector<int> prefix(n,0);
+        prefix[0]=a[0]+b[0];
+        for(int i=1;i<n;i++)
+        prefix[i]=prefix[i-1]+a[i]+b[i];
+        
+        vector<vector<int>>dp(n,vector<int>(10005,-1));
+        int ans=2*solve(a,b,dp,1,a[0],prefix);
+        // cout<<ans<<" ";
+        for(int i=0;i<n;i++)
+        {
+            ans+=(n-1)*a[i]*a[i]+(n-1)*b[i]*b[i];
+        }
+        cout<<ans<<"\n";
+        
+    } 
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
